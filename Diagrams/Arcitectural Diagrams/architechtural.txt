@@ -1,0 +1,59 @@
+@startuml
+
+scale 1.2
+
+skinparam componentStyle rectangle
+
+rectangle "Frontend (View) - React + Tailwind CSS" as Frontend {
+    component "Login Page" as LoginPage
+    component "Dashboard" as Dashboard
+    component "Map View" as MapView
+    component "Optimization Page" as OptimizationPage
+    component "Reports" as Reports
+}
+
+rectangle "Backend (Controller) - Node.js + Express.js" as Backend {
+    interface "REST API" as API
+    component "Auth Controller" as AuthController
+    component "Route Controller" as RouteController
+    component "Optimization Controller" as OptimizationController
+    component "Report Controller" as ReportController
+}
+
+rectangle "Optimization Engine (Model) - Python" as OptimizationEngine {
+    component "Route Optimizer" as RouteOptimizer
+    component "Mobility Analyzer" as MobilityAnalyzer
+    component "Report Generator" as ReportGenerator
+}
+
+rectangle "Database - MongoDB" as Database {
+    component "Users Collection" as UsersDB
+    component "Routes Collection" as RoutesDB
+    component "Reports Collection" as ReportsDB
+    component "Mobility Patterns Collection" as MobilityDB
+}
+
+rectangle "External APIs" as ExternalAPIs {
+    component "Google Maps API" as GoogleMapsAPI
+    component "Google Auth API" as GoogleAuthAPI
+}
+
+' Relationships
+Frontend -right-> API : " Calls REST APIs "
+API -down-> AuthController : "Handles authentication"
+API -down-> RouteController : "Manages routes"
+API -down-> OptimizationController : "Triggers optimization"
+API -down-> ReportController : "Fetches reports"
+
+AuthController -down-> UsersDB : "Stores user data"
+RouteController -down-> RoutesDB : "Stores route data"
+OptimizationController -down-> OptimizationEngine : "Triggers optimization"
+ReportController -down-> ReportsDB : "Fetches report data"
+
+OptimizationEngine -right-> GoogleMapsAPI : "Fetches route data"
+OptimizationEngine -down-> MobilityDB : "Stores transit patterns"
+OptimizationEngine -down-> RoutesDB : "Saves optimized routes"
+
+Frontend -right-> GoogleAuthAPI : "Handles user authentication"
+
+@enduml

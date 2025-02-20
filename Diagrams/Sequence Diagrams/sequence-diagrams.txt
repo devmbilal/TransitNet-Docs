@@ -1,0 +1,304 @@
+@startuml
+!theme cerulean
+
+actor Engineer
+
+entity "Authentication Component" as AuthComponent
+entity "Interface & Data Display" as InterfaceDisplay
+entity "Map and Analysis Component" as MapAnalysisComponent
+entity "Route Suggestion Component" as RouteSuggestionComponent
+entity "Route Modification Component" as RouteModificationComponent
+entity "Database & Save Component" as DatabaseSaveComponent
+
+Engineer -> AuthComponent : login(userCredentials)
+AuthComponent -> AuthComponent : Validate credentials
+AuthComponent -> Engineer : Login success or failure
+alt Login success
+    Engineer -> InterfaceDisplay : displayMap(mobilityData)
+    InterfaceDisplay -> InterfaceDisplay : Generate map & overlay data
+    InterfaceDisplay -> Engineer : Display map with mobility data
+else Login failure
+    Engineer -> Engineer : Show error message and retry
+end
+
+Engineer -> MapAnalysisComponent : selectAreaOfInterest(areaDetails)
+MapAnalysisComponent -> MapAnalysisComponent : Highlight area & display mobility patterns
+MapAnalysisComponent -> Engineer : Display detailed mobility patterns
+
+Engineer -> RouteSuggestionComponent : suggestRoutes(mobilityClusters)
+RouteSuggestionComponent -> RouteSuggestionComponent : Suggest new routes based on clusters
+RouteSuggestionComponent -> Engineer : Display suggested routes
+
+Engineer -> RouteModificationComponent : modifyRoutes(routeSuggestions)
+RouteModificationComponent -> RouteModificationComponent : Modify routes (e.g., add/remove stops)
+RouteModificationComponent -> Engineer : Display modified routes
+
+Engineer -> DatabaseSaveComponent : saveRoutes(newRoutes)
+DatabaseSaveComponent -> DatabaseSaveComponent : Save routes to database
+DatabaseSaveComponent -> Engineer : Confirm routes saved successfully
+
+@enduml
+
+
+
+@startuml
+!theme cerulean
+
+actor User
+
+entity "UI Component" as UIComponent
+entity "Validation Component" as ValidationComponent
+entity "Database Component" as DatabaseComponent
+entity "Authorization Component" as AuthorizationComponent
+entity "Access Control Component" as AccessControlComponent
+
+User -> UIComponent : navigateToLoginPage()
+UIComponent -> UIComponent : Display login form
+UIComponent -> User : Show email and password fields
+
+User -> ValidationComponent : inputCredentials(email, password)
+ValidationComponent -> ValidationComponent : Validate email format and password requirements
+ValidationComponent -> DatabaseComponent : Check user existence and authentication
+
+DatabaseComponent -> DatabaseComponent : Search for email and retrieve hashed password
+DatabaseComponent -> DatabaseComponent : Compare entered password with stored hashed password
+alt Credentials match
+    DatabaseComponent -> AuthorizationComponent : Verify user type and access level
+    AuthorizationComponent -> AuthorizationComponent : Check if user type matches stored role
+    alt User type matches
+        AuthorizationComponent -> AccessControlComponent : Grant access
+        AccessControlComponent -> User : Redirect to dashboard based on role
+    else User type mismatch
+        AuthorizationComponent -> User : Error - Unauthorized user type
+    end
+else Credentials do not match
+    DatabaseComponent -> User : Error - Invalid email or password
+end
+
+alt Multiple login failures
+    DatabaseComponent -> User : Prompt for password recovery or account lockout
+end
+
+@enduml
+
+
+@startuml
+
+actor User
+
+entity "UI Component" as UIComponent
+entity "Validation Component" as ValidationComponent
+entity "Database Component" as DatabaseComponent
+entity "Email Service Component" as EmailServiceComponent
+entity "Verification Component" as VerificationComponent
+entity "Access Control Component" as AccessControlComponent
+
+User -> UIComponent : navigateToSignupPage()
+UIComponent -> UIComponent : Display sign-up form
+UIComponent -> User : Show fields for name, email, password, and user type
+
+User -> ValidationComponent : inputDetails(userInfo)
+ValidationComponent -> ValidationComponent : Verify email format, password requirements, and field completion
+alt Invalid input
+    ValidationComponent -> User : Prompt to correct errors
+else Valid input
+    ValidationComponent -> DatabaseComponent : store user details
+    DatabaseComponent -> DatabaseComponent : Encrypt password and store profile with "pending verification" status
+    DatabaseComponent -> EmailServiceComponent : Send confirmation email
+    EmailServiceComponent -> EmailServiceComponent : Generate unique verification link and send to email
+    EmailServiceComponent -> User : Email with verification link
+end
+
+User -> VerificationComponent : verifyAccount(confirmationLink)
+VerificationComponent -> VerificationComponent : Verify confirmation link
+alt Valid link
+    VerificationComponent -> DatabaseComponent : Update user status to "active"
+    DatabaseComponent -> AccessControlComponent : Grant access
+    AccessControlComponent -> User : Allow login and access to dashboard
+else Invalid/expired link
+    VerificationComponent -> User : Prompt to request new confirmation link
+end
+
+@enduml
+
+
+@startuml
+
+actor "User - PT Management Authority" as User
+
+entity "Authentication Component" as AuthComponent
+entity "UI Component" as UIComponent
+entity "Simulation Component" as SimulationComponent
+entity "Analytics Component" as AnalyticsComponent
+entity "Decision Support Component" as DecisionSupportComponent
+entity "Export Component" as ExportComponent
+
+User -> AuthComponent : login(userCredentials)
+AuthComponent -> AuthComponent : Verify credentials
+alt Valid credentials
+    AuthComponent -> UIComponent : Grant access to dashboard
+    UIComponent -> User : Display dashboard
+else Invalid credentials
+    AuthComponent -> User : Display error message ("Incorrect username or password")
+end
+
+User -> UIComponent : accessDecisionSupportTools()
+UIComponent -> UIComponent : Display decision support tools
+UIComponent -> User : Show transport analytics and scenario simulations
+
+User -> SimulationComponent : simulateScenario(simulationDetails)
+SimulationComponent -> SimulationComponent : Simulate transport scenario (e.g., new routes)
+SimulationComponent -> User : Display simulation outcomes (cost efficiency, passenger distribution)
+
+User -> AnalyticsComponent : analyzeImpact(scenarioData)
+AnalyticsComponent -> AnalyticsComponent : Analyze impact (cost changes, efficiency, satisfaction)
+AnalyticsComponent -> User : Provide analysis results (graphs, reports)
+
+User -> DecisionSupportComponent : finalizeDecisions(decisionPlan)
+DecisionSupportComponent -> DecisionSupportComponent : Store decision plan in database
+DecisionSupportComponent -> User : Confirm decisions saved
+
+User -> ExportComponent : exportDecisions(planDetails)
+ExportComponent -> ExportComponent : Generate downloadable decision plan (PDF, Excel, etc.)
+ExportComponent -> User : Provide download link and share option with stakeholders
+
+@enduml
+
+
+
+@startuml
+
+actor "User - Public Transportation Engineer / PT Management Authority" as User
+
+entity "Authentication Component" as AuthComponent
+entity "UI Component" as UIComponent
+entity "Visualization Engine" as VisualizationEngine
+entity "UI & Rendering Component" as UIRenderingComponent
+entity "Export Component" as ExportComponent
+
+User -> AuthComponent : login(userCredentials)
+AuthComponent -> AuthComponent : Verify credentials
+alt Valid credentials
+    AuthComponent -> UIComponent : Grant access to dashboard
+    UIComponent -> User : Display dashboard
+else Invalid credentials
+    AuthComponent -> User : Display error message ("Incorrect username or password")
+end
+
+User -> UIComponent : selectVisualizationModule()
+UIComponent -> UIComponent : Open visualization module
+UIComponent -> User : Show available visualization tools and settings
+
+User -> VisualizationEngine : displayVisualizationLayers(dataLayers)
+VisualizationEngine -> VisualizationEngine : Display default visualization layers
+VisualizationEngine -> User : Show layers (traffic flow, route efficiency, congestion zones)
+
+User -> VisualizationEngine : toggleLayers(layerControls)
+VisualizationEngine -> VisualizationEngine : Update displayed layers based on toggles
+VisualizationEngine -> User : Adjust layers (show/hide based on user input)
+
+User -> UIRenderingComponent : customizeParameters(parameters)
+UIRenderingComponent -> UIRenderingComponent : Update visualization settings (zoom, color scheme, etc.)
+UIRenderingComponent -> User : Display updated visualization with customized parameters
+
+User -> ExportComponent : exportVisualizations(visualizedData)
+ExportComponent -> ExportComponent : Generate downloadable visualization file (PNG, PDF, GIS)
+ExportComponent -> User : Provide export file and share option with stakeholders
+
+@enduml
+
+
+@startuml
+
+actor "User - Public Transport Engineer / PT Management Authority" as User
+
+entity "Authentication Component" as AuthComponent
+entity "UI Component" as UIComponent
+entity "Data Filtering Component" as DataFilteringComponent
+entity "Analysis Engine" as AnalysisEngine
+entity "Database Component" as DatabaseComponent
+
+' 1. User Authentication
+User -> AuthComponent : login(userCredentials)
+AuthComponent -> AuthComponent : Verify credentials
+alt Valid credentials
+    AuthComponent -> UIComponent : Grant access to system
+    UIComponent -> User : Display main dashboard
+else Invalid credentials
+    AuthComponent -> User : Display error message ("Incorrect username or password")
+end
+
+' 2. Accessing the Data Manipulation Interface
+User -> UIComponent : accessDataManipulationInterface()
+UIComponent -> UIComponent : Load data manipulation tools
+UIComponent -> User : Display filtering, sorting, and analysis tools
+
+' 3. Filtering the Data
+User -> DataFilteringComponent : filterData(criteria)
+DataFilteringComponent -> DataFilteringComponent : Process filter request
+DataFilteringComponent -> UIComponent : Display filtered data
+UIComponent -> User : Show filtered dataset
+
+' 4. Analyzing the Data Patterns
+User -> AnalysisEngine : analyzePatterns(filteredData)
+AnalysisEngine -> AnalysisEngine : Process data for patterns and trends
+AnalysisEngine -> UIComponent : Display analyzed results (graphs, heatmaps)
+UIComponent -> User : Show data insights
+
+' 5. Saving Customized Insights
+User -> DatabaseComponent : saveInsights(customizedInsights)
+DatabaseComponent -> DatabaseComponent : Store insights in database
+DatabaseComponent -> User : Confirm insights saved successfully
+
+@enduml
+
+
+@startuml
+
+actor User
+
+entity "Authentication Component" as AuthComponent
+entity "UI Component" as UIComponent
+entity "Data Processing Component" as DataProcessingComponent
+entity "Report Formatting Component" as ReportFormattingComponent
+entity "Export Component" as ExportComponent
+entity "Notification Component" as NotificationComponent
+
+' 1. User Authentication
+User -> AuthComponent : login(userCredentials)
+AuthComponent -> AuthComponent : Verify credentials
+alt Valid credentials
+    AuthComponent -> UIComponent : Grant access to dashboard
+    UIComponent -> User : Display dashboard
+else Invalid credentials
+    AuthComponent -> User : Display error message ("Incorrect username or password")
+end
+
+' 2. Selecting Reporting Module
+User -> UIComponent : selectReportingModule()
+UIComponent -> UIComponent : Open reporting module
+UIComponent -> User : Display report generation options
+
+' 3. Compiling the Report
+User -> DataProcessingComponent : compileReport(data)
+DataProcessingComponent -> DataProcessingComponent : Fetch and aggregate data
+DataProcessingComponent -> User : Display compiled report structure
+
+' 4. Customizing the Report
+User -> ReportFormattingComponent : customizeReport(reportFormat)
+ReportFormattingComponent -> ReportFormattingComponent : Apply layout preferences
+ReportFormattingComponent -> User : Show customized report
+
+' 5. Generating the Report
+User -> ExportComponent : generateReport(outputFormat)
+ExportComponent -> ExportComponent : Create report in selected format (PDF, Excel, Word)
+ExportComponent -> User : Provide download link
+
+' 6. Sharing the Report
+User -> NotificationComponent : shareReport(reportDetails)
+NotificationComponent -> NotificationComponent : Send report link to stakeholders
+NotificationComponent -> User : Confirm report has been shared
+
+@enduml
+
+

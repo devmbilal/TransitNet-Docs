@@ -1,0 +1,175 @@
+@startuml
+
+actor Engineer
+participant "TransitNet Optimizer" as System
+
+Engineer -> System: login(userCredentials)
+System --> Engineer: Confirms login success or failure
+
+Engineer -> System: displayMap(mobilityData)
+System --> Engineer: Displays the map interface with mobility data
+
+Engineer -> System: selectAreaOfInterest(areaDetails)
+System --> Engineer: Highlights the selected area and shows detailed mobility patterns
+
+Engineer -> System: suggestRoutes(mobilityClusters)
+System --> Engineer: Suggests new routes based on mobility clusters
+
+Engineer -> System: modifyRoutes(routeSuggestions)
+System --> Engineer: Updates the displayed routes with modifications
+
+Engineer -> System: saveRoutes(newRoutes)
+System --> Engineer: Confirms routes are saved successfully
+
+@enduml
+
+
+
+@startuml
+!theme cerulean
+actor Engineer
+
+Engineer -> TransitNetOptimizer: login(userCredentials)
+TransitNetOptimizer --> Engineer: Confirms login success or failure
+
+Engineer -> TransitNetOptimizer: uploadRouteData(existingRoutes)
+TransitNetOptimizer --> Engineer: Confirms successful upload and overlays routes on mobility visualization
+
+Engineer -> TransitNetOptimizer: identifyInefficiencies()
+TransitNetOptimizer --> Engineer: Highlights redundant stops and low-utilization routes
+
+Engineer -> TransitNetOptimizer: suggestOptimizedRoutes()
+TransitNetOptimizer --> Engineer: Provides optimized routes based on mobility patterns
+
+Engineer -> TransitNetOptimizer: refineOptimizedRoutes(routeSuggestions)
+TransitNetOptimizer --> Engineer: Updates the displayed routes based on refinements
+
+Engineer -> TransitNetOptimizer: saveOptimizedRoutes(updatedRoutes)
+TransitNetOptimizer --> Engineer: Confirms that optimized routes are saved successfully
+
+@enduml
+
+
+@startuml
+actor Engineer
+
+Engineer -> TransitNetOptimizer: login(userCredentials)
+TransitNetOptimizer --> Engineer: Confirms login success or failure
+
+Engineer -> TransitNetOptimizer: selectVisualizationModule()
+TransitNetOptimizer --> Engineer: Displays visualization module options
+
+Engineer -> TransitNetOptimizer: toggleVisualizationLayers(selectedLayers)
+TransitNetOptimizer --> Engineer: Updates visualization with selected layers
+
+Engineer -> TransitNetOptimizer: customizeVisualizationParameters(parameters)
+TransitNetOptimizer --> Engineer: Adjusts visualization display accordingly
+
+Engineer -> TransitNetOptimizer: exportVisualizations(exportFormat)
+TransitNetOptimizer --> Engineer: Generates and provides the visualization file
+
+@enduml
+
+
+@startuml
+actor PTManagementAuthority
+
+PTManagementAuthority -> TransitNetOptimizer: login(userCredentials)
+TransitNetOptimizer --> PTManagementAuthority: Confirms login success or failure
+
+PTManagementAuthority -> TransitNetOptimizer: accessDecisionSupportTools()
+TransitNetOptimizer --> PTManagementAuthority: Displays key metrics and insights
+
+PTManagementAuthority -> TransitNetOptimizer: simulateScenarios(scenarioParameters)
+TransitNetOptimizer --> PTManagementAuthority: Provides predictive insights on scenario impact
+
+PTManagementAuthority -> TransitNetOptimizer: finalizeDecisions(decisionPlan)
+TransitNetOptimizer --> PTManagementAuthority: Confirms decision plan is saved
+
+PTManagementAuthority -> TransitNetOptimizer: exportDecisionReport(reportFormat)
+TransitNetOptimizer --> PTManagementAuthority: Generates and provides the decision report
+
+@enduml
+
+
+
+@startuml
+actor PTManagementAuthority
+
+PTManagementAuthority -> TransitNetOptimizer: login(userCredentials)
+TransitNetOptimizer --> PTManagementAuthority: Confirms login success or failure
+
+PTManagementAuthority -> TransitNetOptimizer: accessReportingModule()
+TransitNetOptimizer --> PTManagementAuthority: Displays available reporting options
+
+PTManagementAuthority -> TransitNetOptimizer: compileReport(reportType)
+TransitNetOptimizer --> PTManagementAuthority: Generates structured report with key metrics
+
+PTManagementAuthority -> TransitNetOptimizer: customizeReportLayout(layoutPreferences)
+TransitNetOptimizer --> PTManagementAuthority: Updates report with customized layout
+
+PTManagementAuthority -> TransitNetOptimizer: exportReport(reportFormat)
+TransitNetOptimizer --> PTManagementAuthority: Provides downloadable report file
+
+@enduml
+
+
+
+@startuml
+actor PolicyMaker
+
+PolicyMaker -> TransitNetOptimizer: login(userCredentials)
+TransitNetOptimizer --> PolicyMaker: Confirms login success or failure
+
+PolicyMaker -> TransitNetOptimizer: accessReportsSection()
+TransitNetOptimizer --> PolicyMaker: Displays available reports
+
+PolicyMaker -> TransitNetOptimizer: viewReport(reportID)
+TransitNetOptimizer --> PolicyMaker: Displays detailed report
+
+PolicyMaker -> TransitNetOptimizer: downloadReport(reportFormat)
+TransitNetOptimizer --> PolicyMaker: Provides downloadable report file
+
+@enduml
+
+
+
+@startuml
+actor User
+
+User -> TransitNetOptimizer: navigateToSignUpPage()
+TransitNetOptimizer --> User: Displays sign-up form
+
+User -> TransitNetOptimizer: enterDetails(name, email, password, userType)
+TransitNetOptimizer --> User: Validates input fields
+
+User -> TransitNetOptimizer: submitSignUpForm()
+TransitNetOptimizer --> User: Creates account and sends verification email
+
+User -> EmailSystem: verifyAccount(verificationLink)
+EmailSystem --> User: Confirms successful verification
+
+User -> TransitNetOptimizer: login(userCredentials)
+TransitNetOptimizer --> User: Grants access to the system
+
+@enduml
+
+
+
+@startuml
+!theme cerulean
+actor User
+
+User -> TransitNetOptimizer: navigateToLoginPage()
+TransitNetOptimizer --> User: Displays login form
+
+User -> TransitNetOptimizer: enterCredentials(email, password, userType)
+TransitNetOptimizer --> User: Validates credentials
+
+alt Credentials Valid
+    TransitNetOptimizer -> User: Grants access to the system
+else Credentials Invalid
+    TransitNetOptimizer -> User: Displays error message and prompts retry
+end
+
+@enduml
